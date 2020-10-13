@@ -1,0 +1,21 @@
+[package]
+name = "rusty_rabot"
+version = "0.1.0"
+authors = ["Alexander Hurst <alexander.hurst@ontariotechu.net>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+dotenv = "0.15"
+tracing = "0.1"
+tracing-subscriber = "0.2"
+tracing-futures = "0.2" # needed so intrument works with async functions.
+
+[dependencies.tokio]
+version = "0.2"
+features = ["macros"]
+
+[dependencies.serenity]
+features = ["cache", "framework", "standard_framework", "rustls_backend"]
