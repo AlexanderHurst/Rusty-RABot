@@ -27,6 +27,8 @@ use commands::{
     meta::*,
     owner::*,
     help::*,
+    administration::*,
+    pchannels::*,
 };
 
 struct ShardManagerContainer;
@@ -49,7 +51,7 @@ impl EventHandler for Handler {
 }
 
 #[group]
-#[commands(ping, quit, help)]
+#[commands(ping, quit, help, wipe, newgroup, delgroup)]
 struct General;
 
 #[tokio::main]
@@ -86,7 +88,7 @@ async fn main() {
                    .owners(owners)
                    .on_mention(Some(_bot_id))
                    .case_insensitivity(true)
-                   .prefixes(vec!["rusty, rabot, r!"]))
+                   .prefixes(vec!["rusty ", "rabot ", "r! ", "r!"]))
         .group(&GENERAL_GROUP);
 
     // Create the client
@@ -101,7 +103,7 @@ async fn main() {
         data.insert::<ShardManagerContainer>(client.shard_manager.clone());
     }
 
-    if let Err(why) = client.start().await {
+    if let Err(why) = client.start_shards(3).await {
         error!("Client error: {:?}", why);
     }
 }
