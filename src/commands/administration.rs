@@ -68,3 +68,25 @@ async fn wipe(ctx: &Context, msg: &Message, mut args: Args) -> CommandResult {
 
     Ok(())
 }
+
+//TODO: fix unwraps so that code doesn't panic upon recieving None
+#[command]
+async fn verify(ctx: &Context, msg: &Message, mut args: Args) -> CommandResult {
+    let guildid = msg.guild_id.unwrap();
+    let guild = ctx.cache.guild(guildid).await.unwrap();
+    let userid = args.single::<UserId>()?;
+    let mut member = guildid.member(&ctx.http, userid).await.unwrap();
+    let role = guild.role_by_name("member").unwrap();
+
+    member.add_role(&ctx.http, role).await?;
+    Ok(())
+}
+
+// note to fetch a list of all guild members
+// it is necessary to have access to privileged intents
+// #[command]
+// async fn verifyall(ctx: &Context, msg: &Message) -> CommandResult {
+//     let guildid = msg.guild_id.unwrap();
+//     let members = guildid.members(&ctx.http, None, None).await.unwrap();
+//     Ok(())
+// }

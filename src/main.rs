@@ -24,9 +24,7 @@ use tracing_subscriber::{
 };
 
 use commands::{
-    meta::*,
     owner::*,
-    help::*,
     administration::*,
     pchannels::*,
 };
@@ -51,8 +49,18 @@ impl EventHandler for Handler {
 }
 
 #[group]
-#[commands(ping, quit, help, wipe, newgroup, delgroup)]
+#[commands(newgroup, delgroup)]
 struct General;
+
+#[group]
+#[commands(newgroup, delgroup)]
+#[allowed_roles("members")]
+struct Member;
+
+#[group]
+#[commands(quit, wipe, verify)]
+#[allowed_roles("mod", "Dipstick")]
+struct Admin;
 
 #[tokio::main]
 async fn main() {
@@ -89,7 +97,9 @@ async fn main() {
                    .on_mention(Some(_bot_id))
                    .case_insensitivity(true)
                    .prefixes(vec!["rusty ", "rabot ", "r! ", "r!"]))
-        .group(&GENERAL_GROUP);
+        .group(&GENERAL_GROUP)
+        .group(&MEMBER_GROUP)
+        .group(&ADMIN_GROUP);
 
     // Create the client
     let mut client = Client::new(&token)

@@ -3,6 +3,7 @@ use serenity::model::prelude::*;
 use serenity::prelude::*;
 
 #[command]
+#[allowed_roles("member")]
 async fn newgroup(ctx: &Context, msg: &Message, mut args: Args) -> CommandResult {
     println!("Creating private Channel");
 
@@ -17,7 +18,7 @@ async fn newgroup(ctx: &Context, msg: &Message, mut args: Args) -> CommandResult
         })
         .await?;
 
-    let voice_chat = guild
+    let _voice_chat = guild
         .create_channel(&ctx, |c| {
             c.name(format!("{} {}", base_name, "Voice"))
                 .category(&category)
@@ -25,7 +26,7 @@ async fn newgroup(ctx: &Context, msg: &Message, mut args: Args) -> CommandResult
         })
         .await?;
 
-    let text_chat = guild
+    let _text_chat = guild
         .create_channel(&ctx, |c| {
             c.name(format!("{} {}", base_name, "Text"))
                 .category(&category)
@@ -33,7 +34,7 @@ async fn newgroup(ctx: &Context, msg: &Message, mut args: Args) -> CommandResult
         })
         .await?;
 
-    let bot_chat = guild
+    let _bot_chat = guild
         .create_channel(&ctx, |c| {
             c.name(format!("{} {}", base_name, "Bot"))
                 .category(&category)
